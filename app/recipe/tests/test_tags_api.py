@@ -27,7 +27,7 @@ class PublicTagsApiTests(TestCase):
 
 
 class PrivateTagsApiTests(TestCase):
-    """Test the authprized user tags API"""
+    """Test the authorized user tags API"""
 
     def setUp(self):
         self.user = get_user_model().objects.create_user(
@@ -45,10 +45,10 @@ class PrivateTagsApiTests(TestCase):
         res = self.client.get(TAGS_URL)
 
         tags = Tag.objects.all().order_by('-name')
-        serilazer = TagSerializer(tags, many=True)
+        serializer = TagSerializer(tags, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serilazer.data)
+        self.assertEqual(res.data, serializer.data)
 
     def test_tags_limited_to_user(self):
         """Test that tags are for the authenticated user"""
@@ -78,7 +78,7 @@ class PrivateTagsApiTests(TestCase):
         self.assertTrue(exits)
 
     def test_tag_invalid(self):
-        """Test creating a new tag with uinvalid payload"""
+        """Test creating a new tag with invalid payload"""
         payload = {'name': ''}
         res = self.client.post(TAGS_URL, payload)
 
